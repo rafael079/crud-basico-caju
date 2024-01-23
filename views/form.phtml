@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * Se houver um id na query string eu sei que é edição então busco o item que será editado
+ */
+if ($_GET && isset($_GET['edit'])) {
+
+    // Transformando o parâmetro em inteiro
+    $id = (int) $_GET['edit'];
+
+    // Consulta o item
+    $query = $database->query("SELECT * FROM post WHERE id=$id");
+
+    // Guardo tudo em post
+    $post = $query->fetchObject();
+}
+
+// Em caso da requisição ser um POST
+if ($_POST) {
+
+    /**
+     * Dado formulário, podem ser tratados antes de inserir no banco
+     */
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+
+    if ($_GET && isset($id)) {
+
+        $database->query("UPDATE post
+            SET title = '$title', content = '$content'
+            WHERE id=$id;");
+
+        redirect("Post editado com sucesso");
+    } else {
+        $database->query("INSERT INTO post (title, content) VALUES ('$title', '$content');");
+
+        redirect("Post adicionado com sucesso");
+    }
+}
+?>
+
+<div>
+    <div class="text-left">
+        <h2 class="text-xl text-gray-800 font-bold uppercase text-gray-500 text-xl">
+            Criar uma nova postagem
+        </h2>
+    </div>
+
+    <div class="p-4 relative z-10 bg-white border rounded-xl mt-4 md:p-10">
+        <form method="post" action="">
+            <div class="mb-4 sm:mb-8">
+                <label class="block mb-2 text-sm font-medium">Titulo</label>
+                <input type="text" name="title" value="<?php echo $post->title ?? ''; ?>"
+                    class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                    placeholder="Titulo">
+            </div>
+            <div>
+                <label class="block mb-2 text-sm font-medium">Conteúdo</label>
+                <div class="mt-1">
+                    <textarea name="content" rows="5"
+                        class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                        placeholder="Coloque algum texto por aqui..."><?php echo $post->content ?? ''; ?></textarea>
+                </div>
+            </div>
+
+            <div class="mt-6 grid">
+                <button type="submit"
+                    class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>

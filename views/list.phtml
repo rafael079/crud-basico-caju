@@ -1,0 +1,68 @@
+<?php
+/** 
+ * Verifico aqui se há na query string o parâmetro para deletar um post 
+ */
+if ($_GET && isset($_GET['delete'])) {
+
+    // Transformando o parâmetro em inteiro
+    $id = (int) $_GET['delete'];
+
+    // Executando a query de remoção
+    $query = $database->delete($id);
+
+    // se query retorna true redireciono
+    if ($query) {
+        redirect();
+    }
+}
+
+?>
+
+<div class="flex flex-col bg-white p-5 shadow rounded-lg mt-11">
+    <div class="-m-1.5 overflow-x-auto">
+        <div class="p-1.5 min-w-full inline-block align-middle">
+            <div class="overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                                Titulo
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                                Conteúdo
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <?php if (!empty($database->getAll())): ?>
+
+                            <?php foreach ($database->getAll() as $item): ?>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                        <?php echo $item['title']; ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">
+                                        <?php echo $item['content']; ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                        <a href="?edit=<?php echo $item['id']; ?>"
+                                            class="inline-flex bg-green-100 px-2 py-1 items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-green-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">Edit</a>
+                                        <a href="?delete=<?php echo $item['id']; ?>"
+                                            class="inline-flex bg-red-100  px-2 py-1 items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">Delete</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="2"
+                                    class="px-6 py-4 whitespace-nowrap text-sm text-center font-medium text-gray-800">
+                                    Não há posts cadastrados aqui
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

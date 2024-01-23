@@ -1,0 +1,19 @@
+<?php
+$message = null;
+
+/**
+ * Mostra mensagens com resultado da requisição, coloquei a mensagem na query string mesmo porque é mais rápido assim
+ * Mas poderia ser feito utilizando SESSIONS
+ */
+if ($_GET && isset($_GET['message'])) {
+    $message = $_GET['message'];
+}
+?>
+
+<?php if (!empty($message)): ?>
+    <div class="bg-teal-500 my-5 text-sm text-white rounded-lg p-4" role="alert">
+        <span class="font-bold">
+            <?php echo $message; ?>
+        </span>
+    </div>
+<?php endif; ?>

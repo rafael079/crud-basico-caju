@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Crud Caju</title>
+    <!-- Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans antialiased bg-stone-200">
+    <div class="min-h-screen">
+        <div class="mx-auto mt-5 max-w-6xl">
+            <?php include(VIEW_PATH . 'header.phtml'); ?>
+
+            <!-- exibição de mensagens -->
+            <?php include(VIEW_PATH . 'messages.phtml'); ?>
+
+            <div class="grid grid-cols-3 gap-4">
+
+                <!-- formulário para inserir conteúdo -->
+                <?php include(VIEW_PATH . 'form.phtml'); ?>
+
+                <div class="col-span-2">
+                    <!-- lista de conteúdo inserido -->
+                    <?php include(VIEW_PATH . 'list.phtml'); ?>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
