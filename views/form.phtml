@@ -9,30 +9,21 @@ if ($_GET && isset($_GET['edit'])) {
     $id = (int) $_GET['edit'];
 
     // Consulta o item
-    $query = $database->query("SELECT * FROM post WHERE id=$id");
-
-    // Guardo tudo em post
-    $post = $query->fetchObject();
+    $post = $database->getById($id);
 }
 
 // Em caso da requisição ser um POST
 if ($_POST) {
 
-    /**
-     * Dado formulário, podem ser tratados antes de inserir no banco
-     */
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-
     if ($_GET && isset($id)) {
 
         $database->query("UPDATE post
-            SET title = '$title', content = '$content'
-            WHERE id=$id;");
+            SET title = :title, content = :content
+            WHERE id=:id;", [':id' => $id, ':title' => $_POST['title'], ':content' => $_POST['content']]);
 
         redirect("Post editado com sucesso");
     } else {
-        $database->query("INSERT INTO post (title, content) VALUES ('$title', '$content');");
+        $database->query("INSERT INTO post (title, content) VALUES (:title, :content);", [':title' => $_POST['title'], ':content' => $_POST['content']]);
 
         redirect("Post adicionado com sucesso");
     }
